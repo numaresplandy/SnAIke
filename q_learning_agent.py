@@ -41,8 +41,8 @@ class Q_Learning_agent():
             self.Q_table=self.readModel()
         if self.name =='DQL': 
             self.memory = ReplayBuffer(self.memory_size,inputs_dim)
-            #self.q_eval = dq_network(len(self.actions),inputs_dim)
-            self.q_eval = self.readModel()
+            self.q_eval = dq_network(len(self.actions),inputs_dim)
+            #self.q_eval = self.readModel()
 
 
     def storeTransition(self,currentState,currentAction,reward,nextState,done):
