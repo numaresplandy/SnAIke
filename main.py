@@ -24,10 +24,10 @@ if __name__=='__main__':
     tab_score=[]
     mean_reward=[]
     #Choose 'QL' for classic Q_learning or 'DQL' for Deep Q netword
-    name='QL'
+    name='DQL'
     #fnameModel='/Users/numa/Desktop/Numa/Projets/Local/Snake/model/Q_net_2_gamma_0.98.h5'
-    fnameModel='model/Q_net_2_gamme_0.98.h5'
-    fnameScore='score/train_Qnet_2_500_epoch.csv'
+    fnameModel='model/Qnet2_H1_256.h5'
+    fnameScore='score/Qnet2_H1_256_train_500_epoch.csv'
     agent = Q_Learning_agent(name,size,lr=0.1,gamma=0.98,epsilon=1.0,batch_size=32,inputs_dim=25,eps_dec=0.001,eps_min=0.01,memory_size=100000,fname=fnameModel)
     env = environment(size,run_max_time,name)
    # pygame.init()
