@@ -7,7 +7,7 @@ from tensorflow.keras.models import load_model,Model
 from tensorflow.keras.layers import Dense,Input
 from tensorflow.keras.optimizers import Adam
 
-def dq_network(nb_actions,inputs_dim,hidden_size=256,hidden_layers=1): 
+def dq_network(nb_actions,inputs_dim,hidden_size=32,hidden_layers=2): 
     i = Input(shape=(inputs_dim,))
     x=i
     for _ in range(hidden_layers): 
@@ -21,24 +21,24 @@ def dq_network(nb_actions,inputs_dim,hidden_size=256,hidden_layers=1):
 class Q_Learning_agent(): 
     def __init__(self,name,size,lr,gamma,epsilon,batch_size,inputs_dim,fname,eps_dec=0.001,eps_min=0.01,memory_size=100000): 
         self.size=size
-        self.name=name
-        self.actions = ['right','left','up','down']
-        self.reward=0
+        self.name=name # Class name
+        self.actions = ['right','left','up','down'] #Commun
+        self.reward=0 #Commun
         self.discountFactor=gamma
         self.learning_rate=lr
-        self.filename=fname
+        self.filename=fname #Commun 
         self.epsilon=epsilon
         self.batch_size=batch_size
         self.inputs_dim=inputs_dim
         self.memory_size=memory_size
-        self.eps_dec=eps_dec
-        self.eps_min=eps_min
+        self.eps_dec=eps_dec #Commun
+        self.eps_min=eps_min #Commun
         self.apple = ['N','S','E','W','NW','NE','SW','SE']
         self.sur=[[0,0,0,0],[1,1,1,1],[1,1,1,0],[1,1,0,1],[0,1,1,1],[1,0,1,1],[1,1,0,0],[1,0,1,0],[1,0,0,1],[0,1,1,0],[0,1,0,1],[0,0,1,1],[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]
         if self.name =='QL': 
             self.states=self.createStates()
-             #self.Q_table=self.createQTable()
-            self.Q_table=self.readModel()
+            self.Q_table=self.createQTable()
+            #self.Q_table=self.readModel()
         if self.name =='DQL': 
             self.memory = ReplayBuffer(self.memory_size,inputs_dim)
             self.q_eval = dq_network(len(self.actions),inputs_dim)

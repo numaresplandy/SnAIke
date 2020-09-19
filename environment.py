@@ -74,6 +74,7 @@ class FoodSpawner():
         self.size=size
         self.position=self.getFoodCoordonate(body)
         self.isFoodOnScreen = True
+
     def SpawnFood(self,body):
         if self.isFoodOnScreen == False:
             self.position = self.getFoodCoordonate(body)
@@ -96,7 +97,7 @@ class FoodSpawner():
 
 
 class environment(): 
-    def __init__(self,size,run_max_time,name):
+    def __init__(self,size,run_max_time):
         self.size=size
         self.run_max_time = run_max_time
         self.snake=Snake(size)
@@ -104,7 +105,6 @@ class environment():
         self.foodPosition=self.foodSpawner.SpawnFood(self.snake.getBody())
         self.currentState=[]
         self.nextState=[]
-        self.name=name
         self.distance=0
         self.apple = ['N','S','E','W','NW','NE','SW','SE']
         self.time=0
@@ -112,23 +112,18 @@ class environment():
         #self.win = pygame.display.set_mode((self.size+20,self.size+20))
 
 
-    def reset(self):
+    def reset(self,agent):
         self.snake=Snake(self.size)
         self.foodSpawner=FoodSpawner(self.size,self.snake.getBody())
         self.foodPosition=self.foodSpawner.SpawnFood(self.snake.getBody())
         self.nextState=[]
         self.distance=0
         self.time=0
-        if self.name == 'QL':
-            self.currentState=self.getState(self.snake.getHeadPos(),self.snake.getBody(),self.foodSpawner)
-        elif self.name == 'DQL':
-            self.distanceHeadApple()
-            self.currentState=self.getStateDQN(self.snake.getHeadPos(),self.snake.getBody(),self.foodSpawner)
-
+        self.currentState=agent.getState(self.snake.getHeadPos(),self.snake.getBody(),self.foodSpawner)
         return self.currentState
 
 
-    def step(self,action):
+    def step(self,action,agent):
         self.snake.changeDirTo(action)
         self.foodPosition = self.foodSpawner.SpawnFood(self.snake.getBody())
         self.time+=1
@@ -142,11 +137,7 @@ class environment():
             done=True
         else:
             reward = self.giveReward(3)
-        if self.name == 'QL':
-            self.next_state=self.getState(self.snake.getHeadPos(),self.snake.getBody(),self.foodSpawner)
-        elif self.name == 'DQL':
-            #self.distanceHeadApple()
-            self.next_state=self.getStateDQN(self.snake.getHeadPos(),self.snake.getBody(),self.foodSpawner)
+        self.next_state=agent.getState(self.snake.getHeadPos(),self.snake.getBody(),self.foodSpawner)
         return self.next_state, reward, done
 
     def updateStates(self): 
@@ -156,83 +147,13 @@ class environment():
     def returnTime(self):
         return self.time
 
-    def getStateDQN(self,head,body,foodspw):
-        surrounwding=np.zeros(24,dtype=np.int32)
-        index=0
-        for i in range(-20, 30, 10):
-            for j in range(-20, 30, 10):
-                if [head[0]+j,head[1]+i] in body and ([head[0]+j,head[1]+i] != head): 
-                    surrounwding[index]=1
-                if head[1]+i <10:
-                    surrounwding[index]=1
-                if head[1]+i >self.size:
-                    surrounwding[index]=1
-                if head[0]+j <10:
-                    surrounwding[index]=1 
-                if head[0]+j > self.size:
-                    surrounwding[index]=1 
-                if ([head[0]+j,head[1]+i] != head): 
-                    index+=1
-        return np.hstack([surrounwding,self.getApplePosition(head,foodspw)]).tolist()
-
-
-    def getState(self,pos,body,foodspw):
-        surrounwding=[0,0,0,0]
-        if [pos[0],pos[1]-10] in body or pos[1]==10:
-            #DOWN
-            surrounwding[0]=1
-        if [pos[0],pos[1]+10] in body or pos[1]==self.size: 
-            #UP
-            surrounwding[1]=1
-        if [pos[0]+10,pos[1]] in body or pos[0]==self.size: 
-            #LEFT
-            surrounwding[2]=1
-        if [pos[0]-10,pos[1]] in body or pos[0]==10: 
-            #RIGHT
-            surrounwding[3]=1
-        #return [surrounwding,self.getApplePosition(pos,foodspw)]
-        return np.hstack([surrounwding,self.getApplePosition(pos,foodspw)]).tolist()
-
-
-    def getApplePosition(self,posHead,foodspw):
-        apple = ''
-        #posHead = self.snake.position
-        posFood = foodspw.getFoodPos()
-        if posFood[0]==posHead[0] and posFood[1] in range(0,posHead[1]):
-            #NORTH
-            apple='N'
-        elif posFood[0]==posHead[0] and posFood[1] in range(posHead[1],(self.size)+10): 
-            #SOUTH 
-            apple='S' 
-        elif posFood[1]==posHead[1] and posFood[0] in range(0,posHead[0]): 
-            #WEST
-            apple='W'
-        elif posFood[1]==posHead[1] and posFood[0] in range(posHead[0],(self.size)+10): 
-            #EAST
-            apple='E'
-        elif posFood[1] in range(0,posHead[1]) and posFood[0] in range(0,posHead[0]): 
-            #NORT-WEST
-            apple='NW' 
-        elif  posFood[1] in range(0,posHead[1]) and posFood[0] in range(posHead[0],(self.size)+10): 
-            #NORT-EAST
-            apple='NE'
-        elif  posFood[1] in range(posHead[1],(self.size)+10) and posFood[0] in range(0,posHead[0]): 
-            #SOUTH-WEST
-            apple='SW'
-        elif  posFood[1] in range(posHead[1],(self.size)+10) and posFood[0] in range(posHead[0],(self.size)+10): 
-            #SOUTH-EAST
-            apple='SE'
-
-        return self.apple.index(apple)
-        #return apple 
-
 
     def giveReward(self,ID):
         a = self.distanceHeadApple()
         if ID==0: #touch the apple
-            return 50
+            return 100
         if ID==1:  #touch a wall or itself
-            return -100 
+            return -50
         if ID==3 and a ==2: #getting far away of the apple
             return -10
         if ID==3 and a ==3: #getting clother of the apple
