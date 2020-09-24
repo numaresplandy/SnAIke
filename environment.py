@@ -153,11 +153,11 @@ class environment():
         if ID==0: #touch the apple
             return 100
         if ID==1:  #touch a wall or itself
-            return -50
+            return -100
         if ID==3 and a ==2: #getting far away of the apple
-            return -10
+            return -5
         if ID==3 and a ==3: #getting clother of the apple
-            return 10
+            return 5
 
 
     def distanceHeadApple(self):

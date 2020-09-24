@@ -9,9 +9,9 @@ from tensorflow.keras.optimizers import Adam
 
 def dq_network(nb_actions,inputs_dim,hidden_size=64,hidden_layers=2): 
     i = Input(shape=(inputs_dim,))
-    x=i
-    for _ in range(hidden_layers): 
-        x = Dense(hidden_size,activation='relu')(x)
+    x=i 
+    x = Dense(32,activation='relu')(x)
+    x = Dense(16,activation='relu')(x)
     x=Dense(nb_actions)(x)
     model = Model(i,x)
     model.compile(loss='mse',optimizer='adam')
@@ -24,10 +24,10 @@ class agent():
         self.apple = ['N','S','E','W','NW','NE','SW','SE']
         self.reward=0 #Commun
         self.filename=fname #Commun
-        self.size=size 
+        self.size=size
         self.epsilon=0
         self.eps_dec=0.0001 #Commun
-        self.eps_min=0 #Commun
+        self.eps_min=0.1 #Commun
         self.learning_rate=0.1
         self.discountFactor=0.90
 
@@ -62,7 +62,7 @@ class agent():
         return self.apple.index(apple) 
 
 class deep_q_learning(agent):
-    def __init__(self,batch_size,inputs_dim,fname,memory_size=100000):
+    def __init__(self,size,batch_size,inputs_dim,fname,memory_size=100000):
          agent.__init__(self,size,fname)
          self.batch_size=batch_size
          self.inputs_dim=inputs_dim

@@ -13,7 +13,7 @@ import tensorflow as tf
 #saving Score and Epsilon value
 def saveScore(score,path):
     df = pd.DataFrame(score,columns=['game','score','mean_reward','eps','time']) 
-    df.to_csv('score/'+path+'.csv',mode='w',header=True)
+    df.to_csv('score/'+path+'.csv',mode='a',header=False)
 
 
 if __name__=='__main__': 
@@ -25,10 +25,10 @@ if __name__=='__main__':
     out=False
     tab_score=[]
     sum_reward=[]
-    fnameModel='Qtable_train_e_2000_lr_0.1_df_0.9_R4'
-    fnameTest='Qtable_test_e_100_lr_0.1_df_0.9_R4'
-    #agent = deep_q_learning(batch_size=128,inputs_dim=25,fname=fnameModel)
-    agent = q_learning(size,fname=fnameModel)
+    fnameModel='Qnet2_train_e_2000_lr_0.1_df_0.9_R5'
+    fnameTest='Qnet2_test_e_100_lr_0.1_df_0.9_R5'
+    agent = deep_q_learning(size,batch_size=64,inputs_dim=25,fname=fnameModel)
+    #agent = q_learning(size,fname=fnameModel)
     env = environment(size,run_max_time)
     #pygame.init()
 
