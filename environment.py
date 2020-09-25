@@ -120,7 +120,7 @@ class environment():
         self.nextState=[]
         self.distance=0
         self.time=0
-        self.currentState=agent.getState(self.snake.getHeadPos(),self.snake.getBody(),self.foodSpawner)
+        self.currentState=agent.getState(self.snake.getHeadPos(),self.snake.getBody(),self.foodSpawner,self.distance)
         return self.currentState
 
 
@@ -138,7 +138,7 @@ class environment():
             done=True
         else:
             reward = self.giveReward(3)
-        self.next_state=agent.getState(self.snake.getHeadPos(),self.snake.getBody(),self.foodSpawner)
+        self.next_state=agent.getState(self.snake.getHeadPos(),self.snake.getBody(),self.foodSpawner,self.distance)
         return self.next_state, reward, done
 
     def updateStates(self): 
