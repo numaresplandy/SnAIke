@@ -19,16 +19,16 @@ def saveScore(score,path):
 if __name__=='__main__': 
     tf.compat.v1.disable_eager_execution()
     size=200 #Window size
-    n_games=5000#Number of game to play
+    n_games=200#Number of game to play
     run_max_time=1000 #To avoid infinite loops
     score=0
     rewardID =1
     out=False
     tab_score=[]
     sum_reward=[]
-    fnameModel='Qnet9_train_e_5000_lr_0.1_df_0.9'
-    #fnameTest='Qnet7_test_e_200_lr_0.1_df_0.9'
-    agent = deep_q_learning(size,batch_size=64,inputs_dim=25,fname=fnameModel)
+    fnameModel='Qnet10_train_e_5000_lr_0.1_df_0.9'
+    fnameTest='Qnet10_test_e_200_lr_0.1_df_0.9'
+    agent = deep_q_learning(size,batch_size=64,inputs_dim=26,fname=fnameModel)
     #agent = q_learning(size,fname=fnameModel)
     env = environment(size,run_max_time,rewardID)
     #pygame.init()
@@ -58,7 +58,7 @@ if __name__=='__main__':
     if out==False:
         pass
         agent.saveModel()
-        saveScore(tab_score,fnameModel)
+        saveScore(tab_score,fnameTest)
         
 
 
