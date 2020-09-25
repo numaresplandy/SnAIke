@@ -97,7 +97,8 @@ class FoodSpawner():
 
 
 class environment(): 
-    def __init__(self,size,run_max_time):
+    def __init__(self,size,run_max_time,rewardID):
+        self.reward = self.rewardFunc(rewardID) 
         self.size=size
         self.run_max_time = run_max_time
         self.snake=Snake(size)
@@ -147,18 +148,28 @@ class environment():
     def returnTime(self):
         return self.time
 
+    def rewardFunc(self,rID): 
+        switcher = {
+                1: [40,-100,-5,5],
+                2: [100,-100,0,0],
+                3: [100,-100,-1,1],
+                4: [100,-50,-10,10],
+                5: [100,-100,-5,5],
+                6: [30,-100,-1,1]
+            } 
+        return switcher.get(rID)
 
     def giveReward(self,ID):
         a = self.distanceHeadApple()
         if ID==0: #touch the apple
-            return 100
+            return self.reward[0]
         if ID==1:  #touch a wall or itself
-            return -100
+            return self.reward[1]
         if ID==3 and a ==2: #getting far away of the apple
-            return -5
+            return self.reward[2]
         if ID==3 and a ==3: #getting clother of the apple
-            return 5
-
+            return self.reward[3]
+        
 
     def distanceHeadApple(self):
         d=np.sqrt(np.square(self.snake.position[0]-self.foodSpawner.position[0])+np.square(self.snake.position[1]-self.foodSpawner.position[1]))
