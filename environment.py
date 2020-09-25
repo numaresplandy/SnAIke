@@ -174,10 +174,10 @@ class environment():
     def distanceHeadApple(self):
         d=np.sqrt(np.square(self.snake.position[0]-self.foodSpawner.position[0])+np.square(self.snake.position[1]-self.foodSpawner.position[1]))
         if d >= self.distance:
-            self.distance=d
+            self.distance=int(d)
             return 2
         else:
-            self.distance=d
+            self.distance=int(d)
             return 3
 
 
