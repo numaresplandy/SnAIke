@@ -10,8 +10,8 @@ from tensorflow.keras.optimizers import Adam
 def dq_network(nb_actions,inputs_dim,hidden_size=64,hidden_layers=2): 
     i = Input(shape=(inputs_dim,))
     x=i 
-    x = Dense(16,activation='relu')(x)
-    x = Dense(16,activation='relu')(x)
+    x = Dense(32,activation='relu')(x)
+    x = Dense(32,activation='relu')(x)
     x=Dense(nb_actions)(x)
     model = Model(i,x)
     model.compile(loss='mse',optimizer='adam')
@@ -29,7 +29,7 @@ class agent():
         self.eps_dec=0.0001 #Commun
         self.eps_min=0.1 #Commun
         self.learning_rate=0.1
-        self.discountFactor=0.90
+        self.discountFactor=0.99
 
     def updateEps(self): 
         if self.epsilon > self.eps_min: 
@@ -68,8 +68,8 @@ class deep_q_learning(agent):
          self.inputs_dim=inputs_dim
          self.memory_size=memory_size
          self.memory = ReplayBuffer(self.memory_size,inputs_dim)
-         #self.q_eval = dq_network(len(self.actions),inputs_dim)
-         self.q_eval = self.readModel()
+         self.q_eval = dq_network(len(self.actions),inputs_dim)
+         #self.q_eval = self.readModel()
 
     def storeTransition(self,currentState,currentAction,reward,nextState,done):
         self.memory.store_transition(currentState,currentAction,reward,nextState,done)
