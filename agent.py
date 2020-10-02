@@ -19,7 +19,7 @@ def dq_network(nb_actions,inputs_dim,hidden_size=64,hidden_layers=2):
     return model
 
 class agent(): 
-    def __init__(self,size,fname): 
+    def __init__(self,test,size,fname): 
         self.actions = ['right','left','up','down'] #Commun
         self.apple = ['N','S','E','W','NW','NE','SW','SE']
         self.reward=0 #Commun
@@ -30,6 +30,10 @@ class agent():
         self.eps_min=0.1 #Commun
         self.learning_rate=0.1
         self.discountFactor=0.99
+        self.test=test
+        if self.test ==True: 
+            self.epsilon=0
+            self.eps_min=0
 
     def updateEps(self): 
         if self.epsilon > self.eps_min: 
@@ -62,14 +66,16 @@ class agent():
         return self.apple.index(apple) 
 
 class deep_q_learning(agent):
-    def __init__(self,size,batch_size,inputs_dim,fname,memory_size=100000):
-         agent.__init__(self,size,fname)
+    def __init__(self,test,size,batch_size,inputs_dim,fname,memory_size=100000):
+         agent.__init__(self,test,size,fname)
          self.batch_size=batch_size
          self.inputs_dim=inputs_dim
          self.memory_size=memory_size
          self.memory = ReplayBuffer(self.memory_size,inputs_dim)
-         self.q_eval = dq_network(len(self.actions),inputs_dim)
-         #self.q_eval = self.readModel()
+         if self.test == True:
+            self.q_eval = self.readModel()
+         else:
+             self.q_eval = dq_network(len(self.actions),inputs_dim)
 
     def storeTransition(self,currentState,currentAction,reward,nextState,done):
         self.memory.store_transition(currentState,currentAction,reward,nextState,done)
@@ -132,12 +138,14 @@ class deep_q_learning(agent):
         
 
 class q_learning(agent):
-    def __init__(self,size,fname):
-         agent.__init__(self,size,fname)
+    def __init__(self,test,size,fname):
+         agent.__init__(self,test,size,fname)
          self.sur=[[0,0,0,0],[1,1,1,1],[1,1,1,0],[1,1,0,1],[0,1,1,1],[1,0,1,1],[1,1,0,0],[1,0,1,0],[1,0,0,1],[0,1,1,0],[0,1,0,1],[0,0,1,1],[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]
          self.states=self.createStates()
-         #self.Q_table=self.createQTable()
-         self.Q_table=self.readModel()
+         if self.test == True:
+            self.Q_table=self.readModel()
+         else: 
+            self.Q_table=self.createQTable()
 
     def readModel(self):
         data = pd.read_csv('qtable/'+str(self.filename)+'.csv')
@@ -192,7 +200,7 @@ class q_learning(agent):
         self.Q_table.iloc[self.states.index(currentState)][action]=(1-self.learning_rate)*(self.Q_table.iloc[self.states.index(currentState)][action])+self.learning_rate*(reward + (self.discountFactor)*(nextQValue))
         self.updateEps()
 
-    def getState(self,pos,body,foodspw):
+    def getState(self,pos,body,foodspw,distance):
         surrounwding=[0,0,0,0]
         if [pos[0],pos[1]-10] in body or pos[1]==10:
             #DOWN

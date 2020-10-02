@@ -2,7 +2,7 @@ import random
 import time
 import pandas as pd
 import numpy as np
-#import pygame
+import pygame
 
 #Snake / FoodSpawner / Environment 
 
@@ -109,14 +109,20 @@ class environment():
         self.distance=0
         self.apple = ['N','S','E','W','NW','NE','SW','SE']
         self.time=0
-        #self.fps = pygame.time.Clock()
-        #self.win = pygame.display.set_mode((self.size+20,self.size+20))
+        self.fps = pygame.time.Clock()
+        self.win = pygame.display.set_mode((self.size+20,self.size+20))
+        self.recordFoodBody =[]
+
+    def getFoodBody(self): 
+        return self.recordFoodBody
 
 
     def reset(self,agent):
+        self.recordFoodBody =[]
         self.snake=Snake(self.size)
         self.foodSpawner=FoodSpawner(self.size,self.snake.getBody())
         self.foodPosition=self.foodSpawner.SpawnFood(self.snake.getBody())
+        self.recordFoodBody.append([self.foodSpawner.getFoodPos().copy(),self.snake.getBody().copy()]) 
         self.nextState=[]
         self.distance=0
         self.time=0
@@ -139,6 +145,7 @@ class environment():
         else:
             reward = self.giveReward(3)
         self.next_state=agent.getState(self.snake.getHeadPos(),self.snake.getBody(),self.foodSpawner,self.distance)
+        self.recordFoodBody.append([self.foodSpawner.getFoodPos().copy(),self.snake.getBody().copy()]) 
         return self.next_state, reward, done
 
     def updateStates(self): 
