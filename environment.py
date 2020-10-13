@@ -127,6 +127,7 @@ class environment():
         self.distance=0
         self.time=0
         self.currentState=agent.getState(self.snake.getHeadPos(),self.snake.getBody(),self.foodSpawner,self.distance)
+        agent.updateEps()
         return self.currentState
 
 

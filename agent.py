@@ -20,14 +20,14 @@ def dq_network(nb_actions,inputs_dim,hidden_size=64,hidden_layers=2):
 
 class agent(): 
     def __init__(self,test,size,fname): 
-        self.actions = ['right','left','up','down'] #Commun
+        self.actions = ['right','left','up','down'] 
         self.apple = ['N','S','E','W','NW','NE','SW','SE']
-        self.reward=0 #Commun
-        self.filename=fname #Commun
+        self.reward=0 
+        self.filename=fname 
         self.size=size
         self.epsilon=1
-        self.eps_dec=0.0001 #Commun
-        self.eps_min=0.1 #Commun
+        self.eps_dec=0.005
+        self.eps_min=0.01
         self.learning_rate=0.1
         self.discountFactor=0.99
         self.test=test
@@ -94,7 +94,7 @@ class deep_q_learning(agent):
         batch_i = np.arange(self.batch_size)
         q_target[batch_i,a]=r+self.discountFactor * np.max(q_next,axis=1)*d
         self.q_eval.train_on_batch(s,q_target) 
-        self.updateEps()
+        #self.updateEps()
     
     def saveModel(self):
         self.q_eval.save('model/'+str(self.filename)+'.h5') 
@@ -198,7 +198,7 @@ class q_learning(agent):
         else: 
             nextQValue=0
         self.Q_table.iloc[self.states.index(currentState)][action]=(1-self.learning_rate)*(self.Q_table.iloc[self.states.index(currentState)][action])+self.learning_rate*(reward + (self.discountFactor)*(nextQValue))
-        self.updateEps()
+        #self.updateEps()
 
     def getState(self,pos,body,foodspw,distance):
         surrounwding=[0,0,0,0]
