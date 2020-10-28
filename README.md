@@ -16,10 +16,12 @@ To start this adventure i have implemented a basic Q-learning algortihm. This al
 
 - The actions : In the game the snake can take four possible actions : Up, Down, Left, right
 - The rewards :  This will help the agent learn overtime. The rewards map the relevance of the action taken by the agent to go from state s to state s'. In our case i've decided to define the rewards like: 
-    - The snake eat the apple : +10 
-    - The snake die : -100 
-    - The snake is getting closer to the apple : +1 
-    - The snake is getting far away of the apple : -1 
+| Reward Description | Value |
+| ------ | ----------- |
+| The snake eat the apple | +10 |
+| The snake die | -100 |
+| The snake is getting closer to the apple | +1 |
+| The snake is getting far away of the apple | -1 |
 
 So the goal here is to find a function that will give a value for each possible State-Action pair. This value is called the Q-value. We define the Q-function as follow : 
 
