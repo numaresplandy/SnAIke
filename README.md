@@ -8,8 +8,12 @@ To start this adventure i have implemented a basic Q-learning algortihm. This al
 - The environement : In reinforcement learning the environment is the space in wich the action take place. In our case it's the grid (20x20) of the game.
 - The agent : The agent represent the algorithm, it will try to learn how to take actions on the environment to acheive it's goal. Here the agent is the snake itself.
 - A state : It's the information that the agent get from the environment. In a way the states are the "vision" of the agent. At each time the agent is in a certain state in the environement. For our Q-learning algortithm we have define the states as follow : 
-    - Surowding vision : 
-    - Direction of the apple relative to the head of the snake, which can be either : North, North-west, North-east, South, South-west, South-east, West, East. 
+
+| State | Description |
+| ------ | ----------- |
+| Surownding Vision   | path to data files to supply the data that will be passed into templates. |
+| Direction of the apple | North, North-west, North-east, South, South-west, South-east, West, East |
+
 - The actions : In the game the snake can take four possible actions : Up, Down, Left, right
 - The rewards :  This will help the agent learn overtime. The rewards map the relevance of the action taken by the agent to go from state s to state s'. In our case i've decided to define the rewards like: 
     - The snake eat the apple : +10 
