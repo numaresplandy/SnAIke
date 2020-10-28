@@ -9,10 +9,11 @@ To start this adventure i have implemented a basic Q-learning algortihm. This al
 - The agent : The agent represent the algorithm, it will try to learn how to take actions on the environment to acheive it's goal. Here the agent is the snake itself.
 - A state : It's the information that the agent get from the environment. In a way the states are the "vision" of the agent. At each time the agent is in a certain state in the environement. For our Q-learning algortithm we have define the states as follow : 
 
-| State | Description |
-| ------ | ----------- |
-| Surownding Vision   | path to data files to supply the data that will be passed into templates. |
-| Direction of the apple | North, North-west, North-east, South, South-west, South-east, West, East |
+| State | Type | Description |
+| ------ | --- |----------- |
+| Surownding Vision   | Arrat of integer of length 15 | Each  |
+| Direction of the apple | integer between 0 and 7  | - North, 
+                                                        - North-west, North-east, South, South-west, South-east, West, East |
 
 - The actions : In the game the snake can take four possible actions : Up, Down, Left, right
 - The rewards :  This will help the agent learn overtime. The rewards map the relevance of the action taken by the agent to go from state s to state s'. In our case i've decided to define the rewards like: 
