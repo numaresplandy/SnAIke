@@ -11,8 +11,8 @@ To start this adventure i have implemented a basic Q-learning algortihm. This al
 
 | State | Type | Description |
 | ------ | --- |----------- |
-| Surownding Vision   | Arrat of integer of length 15 | Each  |
-| Direction of the apple | integer between 0 and 7  | - North <br/> - North-west <br/> - North-east <br/> - South <br/> - South-west <br/> - South-east <br/> - West <br/> - East |
+| Surownding Vision   | Arrat of integer of length 15 | 0: Nothing <br/> 1: There is a wall or a part of the tail  |
+| Direction of the apple | integer between 0 and 7  | 0: North <br/> 1: North-west <br/> 2: North-east <br/> 3: South <br/> 4: South-west <br/> 5: South-east <br/> 6: West <br/> 7: East |
 
 - The actions : In the game the snake can take four possible actions : Up, Down, Left, right
 - The rewards :  This will help the agent learn overtime. The rewards map the relevance of the action taken by the agent to go from state s to state s'. In our case i've decided to define the rewards like: 
