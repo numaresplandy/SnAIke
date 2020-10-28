@@ -16,6 +16,7 @@ To start this adventure i have implemented a basic Q-learning algortihm. This al
 
 - The actions : In the game the snake can take four possible actions : Up, Down, Left, right
 - The rewards :  This will help the agent learn overtime. The rewards map the relevance of the action taken by the agent to go from state s to state s'. In our case i've decided to define the rewards like: 
+
 | Reward Description | Value |
 | ------ | ----------- |
 | The snake eat the apple | +10 |
