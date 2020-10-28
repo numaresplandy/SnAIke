@@ -5,17 +5,17 @@ I remenber me, 10 years old playing again and again to snake on my Nokia 3310, t
 ## Q-learning Algorithm
 
 To start this adventure i have implemented a basic Q-learning algortihm. This algortithm is based on the idea that we are trying give a value to a each possible pair of states-actions of an agent on the envirnonement. Let's break the terminologies : 
-- The environement : In reinforcement learning the environment is the space in wich the action take place. In our case it's the grid (20x20) of the game.
-- The agent : The agent represent the algorithm, it will try to learn how to take actions on the environment to acheive it's goal. Here the agent is the snake itself.
-- A state : It's the information that the agent get from the environment. In a way the states are the "vision" of the agent. At each time the agent is in a certain state in the environement. For our Q-learning algortithm we have define the states as follow : 
+- **The environement** : In reinforcement learning the environment is the space in wich the action take place. In our case it's the grid (20x20) of the game.
+- **The agent** : The agent represent the algorithm, it will try to learn how to take actions on the environment to acheive it's goal. Here the agent is the snake itself.
+- **A state** : It's the information that the agent get from the environment. In a way the states are the "vision" of the agent. At each time the agent is in a certain state in the environement. For our Q-learning algortithm we have define the states as follow : 
 
 | State | Type | Description |
 | ------ | --- |----------- |
-| Surownding Vision   | Arrat of integer of length 15 | 0: Nothing <br/> 1: There is a wall or a part of the tail  |
+| Surownding Vision   | Arrat of integer of length 4| 0: There is Nothing <br/> 1: There is a wall or a part of the tail  |
 | Direction of the apple | integer between 0 and 7  | 0: North <br/> 1: North-west <br/> 2: North-east <br/> 3: South <br/> 4: South-west <br/> 5: South-east <br/> 6: West <br/> 7: East |
 
-- The actions : In the game the snake can take four possible actions : Up, Down, Left, right
-- The rewards :  This will help the agent learn overtime. The rewards map the relevance of the action taken by the agent to go from state s to state s'. In our case i've decided to define the rewards like: 
+- **The actions** : In the game the snake can take four possible actions : Up, Down, Left, right
+- **The rewards** :  This will help the agent learn overtime. The rewards map the relevance of the action taken by the agent to go from state s to state s'. In our case i've decided to define the rewards like: 
 
 | Reward Description | Value |
 | ------ | ----------- |
