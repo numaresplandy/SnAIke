@@ -19,6 +19,7 @@ To start this adventure i have implemented a basic Q-learning algortihm. This al
 
 So the goal here is to find a function that will give a value for each possible State-Action pair. This value is called the Q-value. We define the Q-function as follow : 
 
-$\alpha$
+\alpha
+
 
 The particularity of the function which came from the Bellan's equation, is that at each time step (each time the snake is in a state and take an action) we will update the Q-value in function of 
