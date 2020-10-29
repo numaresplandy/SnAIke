@@ -2,7 +2,7 @@ import random
 import time
 import pandas as pd
 import numpy as np
-import pygame
+#import pygame
 
 #Snake / FoodSpawner / Environment 
 
@@ -97,8 +97,8 @@ class FoodSpawner():
 
 
 class environment(): 
-    def __init__(self,size,run_max_time,rewardID):
-        self.reward = self.rewardFunc(rewardID) 
+    def __init__(self,size,run_max_time):
+        self.reward = [10,-100,-1,1] 
         self.size=size
         self.run_max_time = run_max_time
         self.snake=Snake(size)
@@ -109,8 +109,8 @@ class environment():
         self.distance=0
         self.apple = ['N','S','E','W','NW','NE','SW','SE']
         self.time=0
-        self.fps = pygame.time.Clock()
-        self.win = pygame.display.set_mode((self.size+20,self.size+20))
+        #self.fps = pygame.time.Clock()
+        #self.win = pygame.display.set_mode((self.size+20,self.size+20))
         self.recordFoodBody =[]
 
     def getFoodBody(self): 
@@ -126,7 +126,7 @@ class environment():
         self.nextState=[]
         self.distance=0
         self.time=0
-        self.currentState=agent.getState(self.snake.getHeadPos(),self.snake.getBody(),self.foodSpawner,self.distance)
+        self.currentState=agent.getState(self.snake.getHeadPos(),self.snake.getBody(),self.foodSpawner,self.distance,self.snake.direction)
         agent.updateEps()
         return self.currentState
 
@@ -145,7 +145,7 @@ class environment():
             done=True
         else:
             reward = self.giveReward(3)
-        self.next_state=agent.getState(self.snake.getHeadPos(),self.snake.getBody(),self.foodSpawner,self.distance)
+        self.next_state=agent.getState(self.snake.getHeadPos(),self.snake.getBody(),self.foodSpawner,self.distance,self.snake.direction)
         self.recordFoodBody.append([self.foodSpawner.getFoodPos().copy(),self.snake.getBody().copy()]) 
         return self.next_state, reward, done
 
@@ -155,14 +155,6 @@ class environment():
 
     def returnTime(self):
         return self.time
-
-    def rewardFunc(self,rID): 
-        switcher = {
-                1: [50,-100,-5,5],
-                2: [50,-100,-1,1],
-                3: [50,-100,0,0],
-            } 
-        return switcher.get(rID)
 
     def giveReward(self,ID):
         a = self.distanceHeadApple()
